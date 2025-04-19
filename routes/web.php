@@ -27,6 +27,10 @@ Route::get("/letter/{id}", [LetterController::class, "add"]);
 Route::get("/letters/create", [LetterController::class, "create"]);
 Route::post("/letters/add", [LetterController::class, "store"]);
 Route::get("/myletters", [LetterController::class, 'myletter']);
+Route::get("/village", function () {
+
+    return view("pages.structure");
+})->name('village.index');
 
 Route::middleware("guest")->group(function () {
     Route::get("/login", fn() => view("pages.login"))->name('login');
