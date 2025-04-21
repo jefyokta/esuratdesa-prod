@@ -1,0 +1,25 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-CA8W9Xt5.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-KEEtJs3M.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/chart.js": {
+    "file": "assets/chart-BfcjjNfB.js",
+    "name": "chart",
+    "src": "resources/js/chart.js",
+    "isEntry": true
+  },
+  "resources/js/sweetalert.js": {
+    "file": "assets/sweetalert-CCXIRFud.js",
+    "name": "sweetalert",
+    "src": "resources/js/sweetalert.js",
+    "isEntry": true
+  }
+}
