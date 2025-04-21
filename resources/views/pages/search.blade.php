@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="w-full md:w-full">
-    <h1 class="text-4xl font-semibold text-center text-white mb-5">Surat Saya</h1>
+    <h1 class="text-4xl font-semibold text-center  mb-5">Surat Saya</h1>
 
     <form class="flex items-center max-w-sm mx-auto border bg-white rounded-md p-10 ">
         <label for="simple-search" class="sr-only">Search</label>

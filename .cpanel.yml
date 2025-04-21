@@ -1,0 +1,10 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/desn7649/public_html/
+    - /bin/cp -R * $DEPLOYPATH
+    - /bin/cp -R .env $DEPLOYPATH
+    - /usr/local/bin/composer install --no-dev --optimize-autoloader -d $DEPLOYPATH
+    - /usr/local/bin/php $DEPLOYPATH/artisan migrate --force
+    - /usr/local/bin/php $DEPLOYPATH/artisan config:cache
+    - /usr/local/bin/php $DEPLOYPATH/artisan route:cache

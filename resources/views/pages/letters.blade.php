@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<h1 class="font-semibold text-4xl pt-10 text-white">Buat surat</h1>
+<h1 class="font-semibold text-4xl pt-10 t">Buat surat</h1>
     <div class="w-full flex p-5 justify-center">
         @foreach ($categories as $item)
             <div

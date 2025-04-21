@@ -74,7 +74,7 @@ Route::middleware("auth")->group(function () {
     Route::get("/dashboard/letter/print/{id}", [LetterController::class, 'print']);
     Route::get("/dashboard/reports", [ReportController::class, 'index']);
     Route::get("/dashboard/reports/print", [ReportController::class, 'print']);
-    Route::get("/dashboard/letters", [LetterController::class, "dashboard"]);
+    Route::get("/dashboard/letters", [LetterController::class, "dashboard"])->name("letter.index");
     Route::delete("/logout", [AuthController::class, 'logout']);
     Route::get("/api/letters", [LetterController::class, 'api']);
 });

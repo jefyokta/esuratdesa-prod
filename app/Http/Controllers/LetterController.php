@@ -8,6 +8,7 @@ use App\Models\Resident;
 use App\Models\VillageManager;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class LetterController extends Controller
 {
@@ -29,46 +30,52 @@ class LetterController extends Controller
         return view("pages.dashboard.letter.index", compact('letters', "status", 'signers'));
     }
 
+
+
     public function store(Request $request)
     {
-
         $data = $request->validate([
-            "resident_id" => "required",
-            "category_id" => "required",
-            "needed_for" => "required",
-            "redirect" => "nullable"
+            "resident_id" => "required|exists:residents,id",
+            "category_id" => "required|exists:categories,id",
+            "needed_for" => "required|string",
+            "redirect" => "nullable|string"
         ]);
-        $resident = Resident::find($data['resident_id']);
 
-        if (!$resident) {
-            return back()->with('error', 'Data penduduk tidak ditemukan.');
-        }
         $category = Category::find($data['category_id']);
-        if (!$category) {
-            return back()->with('error', 'Jenis Surat Tidak ditemukan.');
-        }
-        if ($category['title'] == 'Rekomendasi Kerja' || $category['title'] == 'Usaha') {
-            $data = $request->validate([
-                "resident_id" => "required",
-                "category_id" => "required",
-                "needed_for" => "required",
-                "redirect" => "nullable",
-                "details" => "required"
+        $needsDetails = in_array(strtolower($category->title), ['rekomendasi kerja', 'usaha']);
+
+        if ($needsDetails) {
+            $request->validate([
+                "details" => "required|string"
             ]);
         }
-        Letter::create([
-            "resident_id" => $resident['id'],
+
+        $letter = Letter::create([
+            "resident_id" => $data['resident_id'],
             "category_id" => $data['category_id'],
             "needed_for" => $data['needed_for'],
-            "details" => $data['details'] ?? null,
+            "details" => $request->input('details'),
             "status" => false
         ]);
 
-        if (isset($data['redirect'])) {
-            return redirect($data['redirect'])->with("success", "berhasil menambahkan surat");
+        $resident = Resident::find($data['resident_id']);
+        $url = route('letter.index');
+        $response =   Http::withHeaders([
+            'Authorization' => env("WA_TOKEN")
+        ])->asForm()->post("https://api.fonnte.com/send", [
+            "target" => "082170987633",
+            "message" => "📨 Pengajuan Surat Baru dari *{$resident->name}*.\nKategori: *{$category->title}*
+            \nKeperluan :*{$data['needed_for']}*
+             \nCek di {$url} "
+        ]);
+
+        return response()->json($response->json());
+
+        if ($request->has('redirect')) {
+            return redirect($request->input('redirect'))->with("success", "Berhasil menambahkan surat.");
         }
 
-        return redirect("/")->with("success", "berhasil menambahkan surat");
+        return redirect("/")->with("success", "Berhasil menambahkan surat.");
     }
 
     public function add($id, Request $request)

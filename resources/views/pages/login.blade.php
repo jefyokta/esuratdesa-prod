@@ -1,7 +1,8 @@
-@extends('layouts.app')
+@include('layouts.header')
+@include('components.navbar')
 
-@section('content')
-@if ($errors->first() )
+
+@if ($errors->first())
     <div id="toast-danger"
         class="flex fixed bottom-5 right-5 items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
         role="alert">
@@ -28,7 +29,8 @@
     </div>
 @endif
 
-    <form class="w-1/3 mx-auto border rounded-md p-10 bg-white" method="POST" action="/login">
+<div class="h-screen flex justify-center items-center bg-slate-200">
+    <form class="w-1/3 max-h-content mx-auto border rounded-md p-10 bg-white" method="POST" action="/login">
         @csrf
 
         <h1 class="text-4xl font-semibold my-10">Login</h1>
@@ -52,4 +54,4 @@
             Submit
         </button>
     </form>
-@endsection
+</div>
